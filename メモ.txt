@@ -1,0 +1,40 @@
+composer require laravel/sail --dev
+
+windows版PHPのphp.iniにて、zipモジュールが有効となっていない為に一部パッケージのインストールが失敗したので、「extension=zip」のコメントアウトを外して再度上記のコマンドを実行
+それによりエラーなくインストールできた。
+↓
+上記は既にLaravelが入った環境下で実行するコマンドで、真っ新な状態からインストールすると前提が異なり、
+artisanコマンドが使えずこれ以上手順を進められない。
+
+
+Laravelインストールから
+一つ上の階層へ移動し、プロジェクトディレクトリ名の末尾に「_」を付けて以下を実行
+composer create-project laravel/laravel modern_training1
+
+modern_training1ディレクトリ内のファイルを全て、modern_training1_ディレクトリへ移動し、modern_training1ディレクトリを削除し、modern_training1_ディレクトリ名を「modern_training1」に戻す
+
+php artisan serve
+↓
+「http://127.0.0.1:8000」で、動作確認
+
+
+
+そこから再度sailのインストール
+composer require laravel/sail --dev
+
+php artisan sail:install
+
+「0」を押下してmysqlをセッティング
+
+他に必要なコンテナがあれば都度下記のコマンドを実行し、必要コンテナの番号を入力してEnterを押す
+php artisan sail:add
+
+wslのコンソールに入り、プロジェクトディレクトリのトップパスに入り以下のコマンドを実行。時間がかかる。特にstep4の処理に時間を要している。Ubuntu側にファイルを置いたほうが良い？
+./vendor/bin/sail up
+
+無事コマンドが完了し、起動成功したら以下のURLにアクセスし、正常に動作している事を確認
+http://localhost:80/
+
+
+
+
