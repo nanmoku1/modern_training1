@@ -36,5 +36,81 @@ wslのコンソールに入り、プロジェクトディレクトリのトッ�
 http://localhost:80/
 
 
+composer require laravel/breeze --dev
+
+laravel/breeze導入時点では、まだmigreteディレクトリへファイル追加や変更は加えられない
+
+php artisan breeze:install
+
+Blade with Alpine(Which Breeze stack would you like to install?)→Yes(Would you like dark mode support?)→PHPUnit(Wich testing framework do you prefer?)
+
+このタイミングでファイルが大幅に追加される。
+処理の中でnpm installとnpm buildの実行も行われている。
+
+主な物
+/home/ub_abc/0/tech/modern_training1/routes/auth.php
+/home/ub_abc/0/tech/modern_training1/resources/views/auth
+/home/ub_abc/0/tech/modern_training1/resources/views/auth/login.blade.php
+/home/ub_abc/0/tech/modern_training1/resources/views/auth/register.blade.php
+/home/ub_abc/0/tech/modern_training1/resources/views/auth/reset-password.blade.php
+
+
+以下のファイルが更新される
+/home/ub_abc/0/tech/modern_training1/routes/web.php→Route::get('/dashboard～、Route::middleware('auth')～、require __DIR__.'/auth.php'が追加
+/home/ub_abc/0/tech/modern_training1/app/Providers/RouteServiceProvider.php
+/home/ub_abc/0/tech/modern_training1/resources/css/app.css
+/home/ub_abc/0/tech/modern_training1/resources/js/app.js
+/home/ub_abc/0/tech/modern_training1/resources/views/welcome.blade.php
+/home/ub_abc/0/tech/modern_training1/vite.config.js→更新されるが一部に改行が入るだけでほぼ変化なし
+/home/ub_abc/0/tech/modern_training1/package.json→@tailwindcss/forms、tailwindcss、postcss、autoprefixer、alpinejsが追加
+
+
+一応以下を実行
+npm install
+
+./vendor/bin/sail up -d
+./vendor/bin/sail artisan migrate
+
+
+何故かDBがDBクライアントツールから繋がらない
+
+以下の対処でつながった
+https://okuyan-techdiary.com/mysql-dbeaver-error/
+「Public Key Retrieval is not allowed」エラーが発生する理由
+エラーの原因となっているのが、認証方式「caching_sha2_password」です。
+
+MySQL8.0からデフォルトの認証方式として採用されています。
+
+caching_sha2_passwordのデフォルト設定では、TLSによる保護がされていない通信での接続ができません。
+
+このため、ローカル環境のMySQLに接続しようとした際にエラーが発生します。
+
+続いて対処方法について解説します。
+
+「Public Key Retrieval is not allowed」エラーの対処方法
+TLSで保護されていない通信で接続する場合は、下記設定を追加する必要があります。
+
+allowPublicKeyRetrieval=true
+DBeaverでは下記の手順で変更できます。
+
+
+rootもsailも問題なく繋がった
+
+
+http://localhost/でページを開き、Registerを押下して登録ページからIPassを登録すると登録と同時にログインされた事を確認
+
+
+docker exec -it modern_training1-laravel.test-1 bash
+
+デバッグできる状態に
+http://localhost?XDEBUG_SESSION_START=session_name
+
+デバッグ状態を停止に
+http://localhost?XDEBUG_SESSION_STOP=session_name
+
+
+ファサードのideヘルパーのインストールと実行をしていなかったので実行
+composer require --dev barryvdh/laravel-ide-helper
+php artisan ide-helper:generate
 
 
