@@ -21,7 +21,7 @@ class DebugClass
         if (is_array($in_var) || is_object($in_var))
         {
             // $message = print_r($in_var, true) . "\n";
-            ini_set('html_errors', 0); // このphp.ini設定を0にしないと、var_dumpメソッドで出力されるダンプの内容がhtmlで整形された状態で出力される
+            ini_set('html_errors', 0); // このphp.ini設定を0にしないと、xdebug実行時にvar_dumpメソッドで出力されるダンプの内容がhtmlで整形された状態で出力される
             ob_start();
             var_dump($in_var);
             $message = ob_get_contents() . "\n";
