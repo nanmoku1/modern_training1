@@ -1,28 +1,31 @@
 // start: Sidebar
 const sidebarToggle = document.querySelector('.sidebar-toggle')
-const sidebarOverlay = document.querySelector('.sidebar-overlay')
+// const sidebarOverlay = document.querySelector('.sidebar-overlay')
 const sidebarMenu = document.querySelector('.sidebar-menu')
 const main = document.querySelector('.main')
 
+// サイドバー初期表示状態復元
 if (localStorage.getItem('sb|sidebar-toggle') === 'false') {
     main.classList.toggle('active')
-    sidebarOverlay.classList.toggle('hidden')
+    // sidebarOverlay.classList.toggle('hidden')
     sidebarMenu.classList.toggle('-translate-x-full')
 }
+// ハンバーガーボタン押下によるサイドバー表示状態の切り替え
 sidebarToggle.addEventListener('click', function (e) {
     e.preventDefault()
     main.classList.toggle('active')
-    sidebarOverlay.classList.toggle('hidden')
+    // sidebarOverlay.classList.toggle('hidden')
     sidebarMenu.classList.toggle('-translate-x-full')
 
     localStorage.setItem('sb|sidebar-toggle', main.classList.contains('active'));
 })
-sidebarOverlay.addEventListener('click', function (e) {
-    e.preventDefault()
-    main.classList.add('active')
-    sidebarOverlay.classList.add('hidden')
-    sidebarMenu.classList.add('-translate-x-full')
-})
+// sidebarOverlay.addEventListener('click', function (e) {
+//     e.preventDefault()
+//     main.classList.add('active')
+//     sidebarOverlay.classList.add('hidden')
+//     sidebarMenu.classList.add('-translate-x-full')
+// })
+// グループボタン押下時のグループ開閉動作
 document.querySelectorAll('.sidebar-dropdown-toggle').forEach(function (item) {
     item.addEventListener('click', function (e) {
         e.preventDefault()
@@ -41,6 +44,7 @@ document.querySelectorAll('.sidebar-dropdown-toggle').forEach(function (item) {
 
 // start: Popper
 const popperInstance = {}
+// ドロップダウンボタンの開閉動作
 document.querySelectorAll('.dropdown').forEach(function (item, index) {
     const popperId = 'popper-' + index
     const toggle = item.querySelector('.dropdown-toggle')
@@ -64,6 +68,7 @@ document.querySelectorAll('.dropdown').forEach(function (item, index) {
         placement: 'bottom-end'
     });
 })
+// ドロップダウン外押下時にドロップダウンを閉じる動作
 document.addEventListener('click', function (e) {
     const toggle = e.target.closest('.dropdown-toggle')
     const menu = e.target.closest('.dropdown-menu')
@@ -114,6 +119,7 @@ function hidePopper(popperId) {
 // end: Popper
 
 // start: Tab
+// アラートアイコン押下後に表示されるドロップダウン内のタブ切り替え
 document.querySelectorAll('[data-tab]').forEach(function (item) {
     item.addEventListener('click', function (e) {
         e.preventDefault()
